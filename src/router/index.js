@@ -20,7 +20,22 @@ const routes = [
             title: '注册'
         },
         component: () => import("../views/SignUp.vue")
-    },
+    }, {
+        path: '/',
+        name: 'base',
+        component: () => import("../views/Base.vue"),
+        children: [
+            /*将用户页面全部作为base页面的孩子页面 */
+            {
+                path: '/recommend',
+                name: 'Recommend',
+                meta: {
+                    title: '推荐'
+                },
+                component: () => import("../views/Recommend.vue")
+            },
+        ]
+    }
 ];
 
 const router = createRouter({

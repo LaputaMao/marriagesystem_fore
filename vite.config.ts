@@ -9,9 +9,10 @@ export default defineConfig({
   //   include:[]
   // },
   server: {
+    port: 5050,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1/',
+        target: 'http://127.0.0.1:5000/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/\/api/, '')
       }
