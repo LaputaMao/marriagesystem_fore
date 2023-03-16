@@ -25,10 +25,10 @@
                     </el-input>
                 </el-form-item>
                 <div class="login-btn">
-                    <el-button type="primary" @click="submitForm(signup)">注册</el-button>
+                    <el-button type="primary" @click="checkPassword_to_finishSign(signup)">注册</el-button>
                 </div>
                 <div class="login-btn">
-                    <el-button type="primary" @click="toLogin()">返回登陆</el-button>
+                    <el-button type="primary" @click="toLogin()">返回登录</el-button>
                 </div>
                 <!-- <p class="login-tips">Tips : 用户名和密码随便填。</p> -->
             </el-form>
@@ -59,6 +59,8 @@ const param = reactive<SignUpInfo>({
     password_extra: '123'
 });
 
+
+//rules检验的prop名称必须和该输入框v-module绑定的param属性一致，否则会valid=null
 const rules: FormRules = {
     username: [
         {
@@ -84,15 +86,15 @@ const rules: FormRules = {
 };
 const permiss = usePermissStore();
 const signup = ref<FormInstance>();
-// const checkPassword_to_finishSign = (formEl: FormInstance | undefined) => {
-//     if (param.password_extra != param.password) {
-//         ElMessage.error("两次密码不一致");
-//     } else {
-//         // param.password = paramExtra.password;
-//         // param.username = paramExtra.username;
-//         submitForm(formEl);
-//     }
-// }
+const checkPassword_to_finishSign = (formEl: FormInstance | undefined) => {
+    if (param.password_extra != param.password) {
+        ElMessage.error("两次密码不一致");
+    } else {
+        // param.password = paramExtra.password;
+        // param.username = paramExtra.username;
+        submitForm(formEl);
+    }
+}
 const submitForm = (formEl: FormInstance | undefined) => {
     console.log(param)
     if (!formEl) {
