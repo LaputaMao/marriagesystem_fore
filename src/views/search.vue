@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<el-tabs v-model="message">
+		<!-- <el-tabs v-model="message">
 			<el-tab-pane :label="`未读消息(${state.unread.length})`" name="first">
 				<el-table :data="state.unread" :show-header="false" style="width: 100%">
 					<el-table-column>
@@ -59,11 +59,11 @@
 					</div>
 				</template>
 			</el-tab-pane>
-		</el-tabs>
+		</el-tabs> -->
 	</div>
 </template>
 
-<script setup lang="ts" name="tabs">
+<script setup lang="ts" name="search">
 import { ref, reactive } from 'vue';
 
 const message = ref('first');
@@ -110,6 +110,7 @@ const handleRestore = (index: number) => {
 .message-title {
 	cursor: pointer;
 }
+
 .handle-row {
 	margin-top: 30px;
 }

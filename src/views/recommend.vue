@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<el-row :gutter="20">
-			<el-col :span="8">
+			<!-- <el-col :span="8">
 				<el-card shadow="hover" class="mgb20" style="height: 252px">
 					<div class="user-info">
 						<el-avatar :size="120" :src="imgurl" />
@@ -34,8 +34,8 @@
 					HTML
 					<el-progress :percentage="1" color="#f56c6c"></el-progress>
 				</el-card>
-			</el-col>
-			<el-col :span="16">
+			</el-col> -->
+			<!-- <el-col :span="16">
 				<el-row :gutter="20" class="mgb20">
 					<el-col :span="8">
 						<el-card shadow="hover" :body-style="{ padding: '0px' }">
@@ -99,10 +99,10 @@
 						</el-table-column>
 					</el-table>
 				</el-card>
-			</el-col>
+			</el-col> -->
 		</el-row>
 		<el-row :gutter="20">
-			<el-col :span="12">
+			<!-- <el-col :span="12">
 				<el-card shadow="hover">
 					<schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>
 				</el-card>
@@ -111,17 +111,17 @@
 				<el-card shadow="hover">
 					<schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
 				</el-card>
-			</el-col>
+			</el-col> -->
 		</el-row>
 	</div>
 </template>
 
-<script setup lang="ts" name="dashboard">
+<script setup lang="ts" name="recommend">
 import Schart from 'vue-schart';
 import { reactive } from 'vue';
 import imgurl from '../assets/img/img.jpg';
 
-const name = localStorage.getItem('ms_username');
+const name = localStorage.getItem('username');
 const role: string = name === 'admin' ? '超级管理员' : '普通用户';
 
 const options = {

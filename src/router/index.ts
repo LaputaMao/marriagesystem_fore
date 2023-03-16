@@ -1,11 +1,12 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import { usePermissStore } from '../store/permiss';
 import Home from '../views/home.vue';
+import { ElMessage } from 'element-plus';
 
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
-        redirect: '/dashboard',
+        redirect: '/login',
     },
     {
         path: '/',
@@ -13,13 +14,13 @@ const routes: RouteRecordRaw[] = [
         component: Home,
         children: [
             {
-                path: '/dashboard',
-                name: 'dashboard',
+                path: '/recommend',
+                name: 'Recommend',
                 meta: {
-                    title: '系统首页',
+                    title: '推荐页面',
                     permiss: '1',
                 },
-                component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard.vue'),
+                component: () => import(/* webpackChunkName: "recommend" */ '../views/recommend.vue'),
             },
             {
                 path: '/table',
@@ -49,13 +50,13 @@ const routes: RouteRecordRaw[] = [
                 component: () => import(/* webpackChunkName: "form" */ '../views/form.vue'),
             },
             {
-                path: '/tabs',
-                name: 'tabs',
+                path: '/search',
+                name: 'search',
                 meta: {
-                    title: 'tab标签',
+                    title: '搜索',
                     permiss: '3',
                 },
-                component: () => import(/* webpackChunkName: "tabs" */ '../views/tabs.vue'),
+                component: () => import(/* webpackChunkName: "search" */ '../views/search.vue'),
             },
             {
                 path: '/donate',
@@ -172,10 +173,11 @@ const router = createRouter({
 
 // router.beforeEach((to, from, next) => {
 //     document.title = `${to.meta.title} | vue-manage-system`;
-//     const role = localStorage.getItem('ms_username');
+//     const role = localStorage.getItem('username');
 //     const permiss = usePermissStore();
-//     if (!role && to.path !== '/login') {
+//     if (!role && to.path !== '/login' ) {
 //         next('/login');
+//         ElMessage.warning("请先登录");
 //     } else if (to.meta.permiss && !permiss.key.includes(to.meta.permiss)) {
 //         // 如果没有权限，则进入403
 //         next('/403');

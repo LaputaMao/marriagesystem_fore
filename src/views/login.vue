@@ -46,8 +46,8 @@ interface LoginInfo {
 
 const router = useRouter();
 const param = reactive<LoginInfo>({
-	username: '',
-	password: ''
+	username: '柳非烟',
+	password: '123'
 });
 
 const rules: FormRules = {
