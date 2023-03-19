@@ -46,8 +46,8 @@ interface LoginInfo {
 
 const router = useRouter();
 const param = reactive<LoginInfo>({
-	username: '柳非烟',
-	password: '123'
+	username: '',
+	password: ''
 });
 
 const rules: FormRules = {
@@ -73,7 +73,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 		if (valid) {
 			Login(param).then((res) => {
 				console.log(res)
-				if (res.data.code == 200) {
+				if (res.data.code == 6200) {
 					//保存当前用户名
 					localStorage.setItem("username", param.username);
 
@@ -84,10 +84,10 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
 					//登录成功后转到推荐页面
 					router.push("/recommend");
-				} else if (res.data.code == 501) {
-					ElMessage.warning("密码错误");
-				} else if (res.data.code == 502) {
-					ElMessage.error("用户不存在")
+				} else if (res.data.code == 6501) {
+					ElMessage.warning(res.data.message);
+				} else if (res.data.code == 6502) {
+					ElMessage.error(res.data.message)
 				}
 			})
 				.catch((res) => {

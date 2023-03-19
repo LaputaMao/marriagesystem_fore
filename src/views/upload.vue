@@ -3,15 +3,12 @@
         <div class="content-title">支持拖拽</div>
         <div class="plugins-tips">
             Element Plus自带上传组件。 访问地址：
+
+            <head>{{ headers.token }}</head>
             <a href="https://element-plus.org/zh-CN/component/upload.html" target="_blank">Element Plus Upload</a>
         </div>
-        <el-upload
-            class="upload-demo"
-            drag
-            action="http://jsonplaceholder.typicode.com/api/posts/"
-            multiple
-            :on-change="handle"
-        >
+        <el-upload class="upload-demo" drag :headers="headers" action="http://127.0.0.1:5000/personal/imgupload" multiple
+            :on-change="handle">
             <el-icon class="el-icon--upload"><upload-filled /></el-icon>
             <div class="el-upload__text">
                 将文件拖到此处，或
@@ -29,9 +26,14 @@
 </template>
 
 <script setup lang="ts">
+import { reactive, ref } from 'vue';
 const handle = (rawFile: any) => {
     console.log(rawFile);
 };
+const headers = {
+    token: localStorage.getItem("token")
+};
+
 </script>
 
 <style scoped>
@@ -42,6 +44,7 @@ const handle = (rawFile: any) => {
     font-size: 22px;
     color: #1f2f3d;
 }
+
 .upload-demo {
     width: 360px;
 }

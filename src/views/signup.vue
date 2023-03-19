@@ -54,9 +54,9 @@ interface SignUpInfo {
 
 const router = useRouter();
 const param = reactive<SignUpInfo>({
-    username: '柳非烟',
-    password: '123',
-    password_extra: '123'
+    username: '',
+    password: '',
+    password_extra: ''
 });
 
 
@@ -107,7 +107,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
             SignUp(param).then((res) => {
 
-                if (res.data.code == 200) {
+                if (res.data.code == 6200) {
                     //保存当前用户名
                     // localStorage.setItem("username", param.username);
 

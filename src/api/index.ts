@@ -23,3 +23,16 @@ export const SignUp = (params: any) => {
         }
     });
 };
+
+//上传用户头像
+export const headup = (params: any) => {
+    return request({
+        url: '/api/personal/imgupload',
+        method: 'post',
+        data: params,
+        headers: {
+            "Content-Type": "multipart/form-data",
+        }
+    });
+};
+
