@@ -20,7 +20,7 @@
 					<span class="btn-bell-badge" v-if="message"></span>
 				</div>
 				<!-- 用户头像 -->
-				<el-avatar class="user-avator" :size="30" :src="imgurl" />
+				<el-avatar class="user-avator" :size="30" :src="resultsrc" />
 				<!-- 用户名下拉菜单 -->
 				<el-dropdown class="user-name" trigger="click" @command="handleCommand">
 					<span class="el-dropdown-link">
@@ -44,19 +44,30 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useSidebarStore } from '../store/sidebar';
 import { useRouter } from 'vue-router';
 import imgurl from '../assets/img/img.jpg';
+import { ImgGet } from '../api';
+// import {getimg} from '../views/user.vue'
 
 const username: string | null = localStorage.getItem('username');
 const message: number = 2;
+
+const resultsrc = ref();
 
 const sidebar = useSidebarStore();
 // 侧边栏折叠
 const collapseChage = () => {
 	sidebar.handleCollapse();
 };
+function getimg() {
+	ImgGet().then((res) => {
+		resultsrc.value = "http://127.0.0.1:5000/personal/imgget?username=" + username
+
+	})
+}
+getimg()
 
 onMounted(() => {
 	if (document.body.clientWidth < 1500) {
@@ -162,4 +173,5 @@ const handleCommand = (command: string) => {
 
 .el-dropdown-menu__item {
 	text-align: center;
-}</style>
+}
+</style>

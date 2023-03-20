@@ -10,10 +10,11 @@
 					</template>
 					<div class="info">
 						<div class="info-image" @click="showDialog">
-							<el-avatar :size="100" :src="avatarImg" />
-							<span class="info-edit">
-								<i class="el-icon-lx-camerafill"></i>
-							</span>
+							<!-- <el-avatar :size="100" :src="avatarImg" /> -->
+							<el-image :src="resultsrc" />
+						
+							<!-- <img src="http://127.0.0.1:5000/personal/imgget"> -->
+							
 						</div>
 						<div class="info-name">{{ name }}</div>
 						<div class="info-desc">个人简介</div>
@@ -45,8 +46,8 @@
 				</el-card>
 			</el-col>
 		</el-row>
-		<el-dialog title="裁剪图片" v-model="dialogVisible" width="600px">
-			<vue-cropper ref="cropper" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage"
+		<el-dialog title="选择图片" v-model="dialogVisible" width="600px">
+			<!-- <vue-cropper ref="cropper" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage"
 				style="width: 100%; height: 400px"></vue-cropper>
 
 			<template #footer>
@@ -56,19 +57,39 @@
 					</el-button>
 					<el-button type="primary" @click="saveAvatar">上传并保存</el-button>
 				</span>
-			</template>
+			</template> -->
+			<el-upload class="upload-demo" drag :headers="headers" action="http://127.0.0.1:5000/personal/imgupload"
+				:on-success="handle">
+				<el-icon class="el-icon--upload"><upload-filled /></el-icon>
+				<div class="el-upload__text">
+					将文件拖到此处，或
+					<em>点击上传</em>
+				</div>
+			</el-upload>
 		</el-dialog>
 	</div>
 </template>
 
 <script setup lang="ts" name="user">
 import { reactive, ref } from 'vue';
-import { headup } from '../api/index';
+import { ImgUpload, ImgGet } from '../api/index';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 import avatar from '../assets/img/img.jpg';
 
-const name = localStorage.getItem('ms_username');
+const handle = () => {
+	// console.log(uploadFile.raw);
+	console.log("out")
+	getimg()
+};
+const headers = {
+	token: localStorage.getItem("token")
+};
+//ref实现双向数据绑定，更新resultsrc.value=
+const resultsrc = ref();
+// const binaryData: any = [];
+// let resvisible = false;
+const name = localStorage.getItem('username');
 const form = reactive({
 	old: '',
 	new: '',
@@ -87,32 +108,53 @@ const showDialog = () => {
 	imgSrc.value = avatarImg.value;
 };
 
-const setImage = (e: any) => {
-	const file = e.target.files[0];
-	if (!file.type.includes('image/')) {
-		return;
-	}
-	const reader = new FileReader();
-	reader.onload = (event: any) => {
-		dialogVisible.value = true;
-		imgSrc.value = event.target.result;
-		cropper.value && cropper.value.replace(event.target.result);
-	};
-	reader.readAsDataURL(file);
-};
+// const setImage = (e: any) => {
+// 	const file = e.target.files[0];
+// 	if (!file.type.includes('image/')) {
+// 		return;
+// 	}
+// 	const reader = new FileReader();
+// 	reader.onload = (event: any) => {
+// 		dialogVisible.value = true;
+// 		imgSrc.value = event.target.result;
+// 		cropper.value && cropper.value.replace(event.target.result);
+// 	};
+// 	reader.readAsDataURL(file);
+// };
 
-const cropImage = () => {
-	cropImg.value = cropper.value.getCroppedCanvas().toDataURL();
-};
+// const cropImage = () => {
+// 	cropImg.value = cropper.value.getCroppedCanvas().toDataURL();
+// };
 
-const saveAvatar = () => {
-	avatarImg.value = cropImg.value;
-	dialogVisible.value = false;
-	console.log(avatarImg.value)
-	headup(avatarImg.value).then((res) => {
-		console.log(res)
+// const saveAvatar = () => {
+// 	avatarImg.value = cropImg.value;
+// 	dialogVisible.value = false;
+// 	console.log(avatarImg.value)
+// 	ImgUpload(avatarImg).then((res) => {
+// 		console.log(res)
+// 	})
+// };
+
+
+function getimg() {
+	ImgGet().then((res) => {
+		// console.log("in")
+		// console.log(res.data)
+		// avatarImg.value = res.data
+		dialogVisible.value = false;
+		// const _resultsrc = window.URL.createObjectURL(res.data);
+		// binaryData.push(res.data)
+		// resultsrc = window.URL.createObjectURL(new Blob(binaryData, { type: 'image/png' }))
+		// resultsrc = window.URL.createObjectURL(res.data);
+		resultsrc.value = "http://127.0.0.1:5000/personal/imgget?username=" + name
+		// console.log(resultsrc.value)
+		// resvisible = true;
 	})
-};
+}
+
+getimg()
+
+
 </script>
 
 <style scoped>

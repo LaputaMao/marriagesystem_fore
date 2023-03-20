@@ -25,13 +25,27 @@ export const SignUp = (params: any) => {
 };
 
 //上传用户头像
-export const headup = (params: any) => {
+export const ImgUpload = (params: any) => {
     return request({
         url: '/api/personal/imgupload',
         method: 'post',
         data: params,
         headers: {
+            "token": localStorage.getItem("token") as string,
             "Content-Type": "multipart/form-data",
+        }
+    });
+};
+
+//获取用户头像
+export const ImgGet = () => {
+    return request({
+        url: '/api/personal/imgget',
+        method: 'get',
+        // params: params,
+        headers: {
+            "token": localStorage.getItem("token") as string,
+            "Content-Type": "image/png",
         }
     });
 };
