@@ -1,14 +1,11 @@
 <template>
 	<div class="tags" v-if="tags.show">
 		<ul>
-			<li
-				class="tags-li"
-				v-for="(item, index) in tags.list"
-				:class="{ active: isActive(item.path) }"
-				:key="index"
-			>
+			<li class="tags-li" v-for="(item, index) in tags.list" :class="{ active: isActive(item.path) }" :key="index">
 				<router-link :to="item.path" class="tags-li-title">{{ item.title }}</router-link>
-				<el-icon @click="closeTags(index)"><Close /></el-icon>
+				<el-icon @click="closeTags(index)">
+					<Close />
+				</el-icon>
 			</li>
 		</ul>
 		<div class="tags-close-box">
@@ -121,6 +118,7 @@ const handleTags = (command: string) => {
 	overflow: hidden;
 	cursor: pointer;
 	height: 23px;
+	width: 70px;
 	border: 1px solid #e9eaec;
 	background: #fff;
 	padding: 0 5px 0 12px;

@@ -94,7 +94,7 @@ const items = [
                 permiss: '5',
             },
             {
-                index: '/upload',
+                index: '/displayinfo',
                 title: '详细资料',
                 permiss: '6',
             },

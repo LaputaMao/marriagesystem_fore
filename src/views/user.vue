@@ -28,7 +28,7 @@
 							<span>信息修改</span>
 						</div>
 					</template>
-					<el-form label-width="110px" :model="baseinfo_form" :rules="select_rules" ref="ruleFormRef" status-icon>
+					<el-form label-width="auto" :model="baseinfo_form" :rules="select_rules" ref="ruleFormRef" status-icon>
 						<el-form-item label="用户名："> {{ name }} </el-form-item>
 						<el-form-item label="性别：" prop="gender">
 							<el-select v-model="baseinfo_form.gender" clearable :placeholder="baseinfo_request.gender">
@@ -932,7 +932,7 @@ function getbaseinfo() {
 				baseinfo_form[key] = res.data.data[key]
 			}
 		}
-		baseinfo_form.gender = res.data.data.gender
+		// baseinfo_form.gender = res.data.data.gender
 	})
 }
 //在加载页面时调用getimg更新用户头像

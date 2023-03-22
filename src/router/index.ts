@@ -14,6 +14,22 @@ const routes: RouteRecordRaw[] = [
         component: Home,
         children: [
             {
+                path: '/user',
+                name: 'user',
+                meta: {
+                    title: '基本资料',
+                },
+                component: () => import(/* webpackChunkName: "user" */ '../views/user.vue'),
+            },
+            {
+                path: '/displayinfo',
+                name: 'displayinfo',
+                meta: {
+                    title: '详细资料',
+                },
+                component: () => import(/* webpackChunkName: "user" */ '../views/displayinfo.vue'),
+            },
+            {
                 path: '/recommend',
                 name: 'Recommend',
                 meta: {
@@ -22,6 +38,16 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "recommend" */ '../views/recommend.vue'),
             },
+            {
+                path: '/search',
+                name: 'search',
+                meta: {
+                    title: '搜索',
+                    permiss: '3',
+                },
+                component: () => import(/* webpackChunkName: "search" */ '../views/search.vue'),
+            },
+            //==============================================================================================
             {
                 path: '/table',
                 name: 'basetable',
@@ -48,15 +74,6 @@ const routes: RouteRecordRaw[] = [
                     permiss: '5',
                 },
                 component: () => import(/* webpackChunkName: "form" */ '../views/form.vue'),
-            },
-            {
-                path: '/search',
-                name: 'search',
-                meta: {
-                    title: '搜索',
-                    permiss: '3',
-                },
-                component: () => import(/* webpackChunkName: "search" */ '../views/search.vue'),
             },
             {
                 path: '/donate',
@@ -93,14 +110,6 @@ const routes: RouteRecordRaw[] = [
                     permiss: '10',
                 },
                 component: () => import(/* webpackChunkName: "icon" */ '../views/icon.vue'),
-            },
-            {
-                path: '/user',
-                name: 'user',
-                meta: {
-                    title: '个人中心',
-                },
-                component: () => import(/* webpackChunkName: "user" */ '../views/user.vue'),
             },
             {
                 path: '/editor',
