@@ -28,76 +28,88 @@
 							<span>信息修改</span>
 						</div>
 					</template>
-					<el-form label-width="110px" :model="baseinfo_form" :rules="select_rules" ref="ruleFormRef">
+					<el-form label-width="110px" :model="baseinfo_form" :rules="select_rules" ref="ruleFormRef" status-icon>
 						<el-form-item label="用户名："> {{ name }} </el-form-item>
 						<el-form-item label="性别：" prop="gender">
-							<el-select v-model="baseinfo_form.gender" clearable placeholder="性别">
+							<el-select v-model="baseinfo_form.gender" clearable :placeholder="baseinfo_request.gender">
 								<el-option v-for="item in options_gender" :key="item.value" :label="item.label"
 									:value="item.value" />
 							</el-select>
 						</el-form-item>
 						<el-form-item label="教育背景：" prop="edubackground">
-							<el-select v-model="baseinfo_form.edubackground" clearable placeholder="教育背景">
+							<el-select v-model="baseinfo_form.edubackground" clearable
+								:placeholder="baseinfo_request.edubackground">
 								<el-option v-for="item in options_edubackground" :key="item.value" :label="item.label"
 									:value="item.value" />
 							</el-select>
 						</el-form-item>
 						<el-form-item label="工作省份：" prop="workprovince">
-							<el-select v-model="baseinfo_form.workprovince" clearable placeholder="工作省份">
+							<!-- 3.22改用el-cascader进行展示优化工作省份和籍贯 -->
+							<el-cascader v-model="baseinfo_form.workprovince" :options="options_workprovice"
+								:show-all-levels="false" :props="props" clearable
+								:placeholder="baseinfo_request.workprovince" @change="cascaderChangeW" />
+							<!-- <el-select v-model="baseinfo_form.workprovince" clearable placeholder="工作省份">
 								<el-option-group v-for="group in options_workprovice" :key="group.label"
 									:label="group.label">
 									<el-option v-for="item in group.options" :key="item.value" :label="item.label"
 										:value="item.value" />
 								</el-option-group>
-							</el-select>
+							</el-select> -->
 						</el-form-item>
 						<el-form-item label="籍贯：" prop="nativeprovince">
-							<el-select v-model="baseinfo_form.nativeprovince" clearable placeholder="籍贯">
+							<el-cascader v-model="baseinfo_form.nativeprovince" :options="options_nativeprovice"
+								:show-all-levels="false" :props="props" clearable
+								:placeholder="baseinfo_request.nativeprovince" @change="cascaderChangeN" />
+							<!-- <el-select v-model="baseinfo_form.nativeprovince" clearable placeholder="籍贯">
 								<el-option-group v-for="group in options_nativeprovice" :key="group.label"
 									:label="group.label">
 									<el-option v-for="item in group.options" :key="item.value" :label="item.label"
 										:value="item.value" />
 								</el-option-group>
-							</el-select>
+							</el-select> -->
 						</el-form-item>
 						<el-form-item label="薪资水平：" prop="salary">
-							<el-select v-model="baseinfo_form.salary" clearable placeholder="薪资水平">
+							<el-select v-model="baseinfo_form.salary" clearable :placeholder="baseinfo_request.salary">
 								<el-option v-for="item in options_salary" :key="item.value" :label="item.label"
 									:value="item.value" />
 							</el-select>
 						</el-form-item>
 						<el-form-item label="婚姻状况：" prop="marital">
-							<el-select v-model="baseinfo_form.marital" clearable placeholder="婚姻状况">
+							<el-select v-model="baseinfo_form.marital" clearable :placeholder="baseinfo_request.marital">
 								<el-option v-for="item in options_marital" :key="item.value" :label="item.label"
 									:value="item.value" />
 							</el-select>
 						</el-form-item>
 						<el-form-item label="民族：" prop="nationality">
-							<el-select v-model="baseinfo_form.nationality" clearable placeholder="民族">
+							<el-select v-model="baseinfo_form.nationality" clearable
+								:placeholder="baseinfo_request.nationality">
 								<el-option v-for="item in options_nationality" :key="item.value" :label="item.label"
 									:value="item.value" />
 							</el-select>
 						</el-form-item>
 						<el-form-item label="职业：" prop="occupation">
-							<el-select v-model="baseinfo_form.occupation" clearable placeholder="职业">
+							<el-select v-model="baseinfo_form.occupation" clearable
+								:placeholder="baseinfo_request.occupation">
 								<el-option v-for="item in options_occupation" :key="item.value" :label="item.label"
 									:value="item.value" />
 							</el-select>
 						</el-form-item>
 						<el-form-item label="住房情况：" prop="houseornot">
-							<el-select v-model="baseinfo_form.houseornot" clearable placeholder="住房">
+							<el-select v-model="baseinfo_form.houseornot" clearable
+								:placeholder="baseinfo_request.houseornot">
 								<el-option v-for="item in options_house" :key="item.value" :label="item.label"
 									:value="item.value" />
 							</el-select>
 						</el-form-item>
 						<el-form-item label="购车情况：" prop="carornot">
-							<el-select v-model="baseinfo_form.carornot" clearable placeholder="购车">
+							<el-select v-model="baseinfo_form.carornot" clearable :placeholder="baseinfo_request.carornot">
 								<el-option v-for="item in options_car" :key="item.value" :label="item.label"
 									:value="item.value" />
 							</el-select>
 						</el-form-item>
 						<el-form-item label="饮酒喜好：" prop="drinkornot">
-							<el-select v-model="baseinfo_form.drinkornot" clearable placeholder="饮酒">
+							<el-select v-model="baseinfo_form.drinkornot" clearable
+								:placeholder="baseinfo_request.drinkornot">
 								<el-option v-for="item in options_drink" :key="item.value" :label="item.label"
 									:value="item.value" />
 							</el-select>
@@ -142,7 +154,7 @@ import { ImgUpload, ImgGet, UpdateBaseInfo, GetBaseInfo } from '../api/index';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 import avatar from '../assets/img/img.jpg';
-import { FormInstance, FormRules, uploadBaseProps } from 'element-plus'
+import { ElMessage, FormInstance, FormRules, uploadBaseProps } from 'element-plus'
 
 const handle = () => {
 	// console.log(uploadFile.raw);
@@ -157,6 +169,9 @@ const resultsrc = ref();
 // const binaryData: any = [];
 // let resvisible = false;
 const name = localStorage.getItem('username');
+const props = {
+	expandTrigger: 'hover' as const,
+}
 const baseinfo_form = reactive({
 	gender: '',
 	edubackground: '',
@@ -170,6 +185,20 @@ const baseinfo_form = reactive({
 	carornot: '',
 	drinkornot: '',
 });
+
+const baseinfo_request = reactive<any>({
+	gender: '',
+	edubackground: '',
+	workprovince: '',
+	nativeprovince: '',
+	salary: '',
+	marital: '',
+	nationality: '',
+	occupation: '',
+	houseornot: '',
+	carornot: '',
+	drinkornot: '',
+})
 
 const options_gender = [
 	{
@@ -205,8 +234,9 @@ const options_edubackground = [
 ]
 const options_workprovice = [
 	{
+		value: '直辖市',
 		label: '直辖市',
-		options: [
+		children: [
 			{
 				value: '北京',
 				label: '北京',
@@ -226,8 +256,9 @@ const options_workprovice = [
 		]
 	},
 	{
-		label: '省',
-		options: [
+		value: '省份',
+		label: '省份',
+		children: [
 			{
 				value: '河北',
 				label: '河北',
@@ -323,8 +354,9 @@ const options_workprovice = [
 		]
 	},
 	{
+		value: '自治区',
 		label: '自治区',
-		options: [
+		children: [
 			{
 				value: '内蒙古',
 				label: '内蒙古',
@@ -348,8 +380,9 @@ const options_workprovice = [
 		]
 	},
 	{
+		value: '特别行政区',
 		label: '特别行政区',
-		options: [
+		children: [
 			{
 				value: '香港',
 				label: '香港',
@@ -364,8 +397,9 @@ const options_workprovice = [
 ]
 const options_nativeprovice = [
 	{
+		value: '直辖市',
 		label: '直辖市',
-		options: [
+		children: [
 			{
 				value: '北京',
 				label: '北京',
@@ -385,8 +419,9 @@ const options_nativeprovice = [
 		]
 	},
 	{
-		label: '省',
-		options: [
+		value: '省份',
+		label: '省份',
+		children: [
 			{
 				value: '河北',
 				label: '河北',
@@ -482,8 +517,9 @@ const options_nativeprovice = [
 		]
 	},
 	{
+		value: '自治区',
 		label: '自治区',
-		options: [
+		children: [
 			{
 				value: '内蒙古',
 				label: '内蒙古',
@@ -507,8 +543,9 @@ const options_nativeprovice = [
 		]
 	},
 	{
+		value: '特别行政区',
 		label: '特别行政区',
-		options: [
+		children: [
 			{
 				value: '香港',
 				label: '香港',
@@ -786,18 +823,40 @@ const select_rules = reactive<FormRules>({
 })
 
 const ruleFormRef = ref<FormInstance>()
+
+//获取cascade数组的第二个值
+const cascaderChangeW = () => {
+	baseinfo_form.workprovince = baseinfo_form.workprovince[1]
+	console.log(baseinfo_form);
+}
+
+const cascaderChangeN = () => {
+	baseinfo_form.nativeprovince = baseinfo_form.nativeprovince[1]
+	console.log(baseinfo_form);
+}
+
 const onSubmit = async (formEl: FormInstance | undefined) => {
 	// console.log("in");
 	if (!formEl) return
 	// console.log("in in");
 	await formEl.validate((valid, fields) => {
 		if (valid) {
-			console.log(baseinfo_form);
+			//此处获取会导致没有改变workprovince和native的提交出现取第二个字符的情况
+			// 应当在@change函数中每当这两个属性被修改的时候再进行取二操作
+			// baseinfo_form.workprovince = baseinfo_form.workprovince[1]
+			// baseinfo_form.nativeprovince = baseinfo_form.nativeprovince[1]
+			// console.log(baseinfo_form);
 			UpdateBaseInfo(baseinfo_form).then((res) => {
-				console.log(res)
+				// console.log(res)
+				if (res.data.code == 6200) {
+					ElMessage.success(res.data.message);
+				} else {
+					ElMessage.warning(res.data.message);
+				}
 			})
 		} else {
-			console.log('error submit!', fields);
+			ElMessage.error(fields);
+			// console.log('error submit!', fields);
 		}
 	})
 
@@ -808,9 +867,7 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
 
 const avatarImg = ref(avatar);
 const imgSrc = ref('');
-const cropImg = ref('');
 const dialogVisible = ref(false);
-const cropper: any = ref();
 
 const showDialog = () => {
 	dialogVisible.value = true;
@@ -843,6 +900,12 @@ const showDialog = () => {
 // 		console.log(res)
 // 	})
 // };
+function isValidKey(
+	key: string | number | symbol,
+	object: object
+): key is keyof typeof object {
+	return key in object;
+}
 
 
 function getimg() {
@@ -862,11 +925,19 @@ function getimg() {
 }
 function getbaseinfo() {
 	GetBaseInfo().then((res) => {
-		console.log(res);
+		// console.log(res);
+		for (const key in baseinfo_form) {
+			// console.log(res.data.data[key])
+			if (isValidKey(key, baseinfo_form)) {
+				baseinfo_form[key] = res.data.data[key]
+			}
+		}
+		baseinfo_form.gender = res.data.data.gender
 	})
 }
 //在加载页面时调用getimg更新用户头像
 getimg()
+//在加载页面时同时get用户基本信息
 getbaseinfo()
 
 </script>
