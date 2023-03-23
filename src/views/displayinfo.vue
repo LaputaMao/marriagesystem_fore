@@ -161,11 +161,17 @@ function getimg() {
 }
 function getdisplayinfo() {
     GetDisplayInfo().then((res) => {
-        for (const key in displayinfo_form) {
-            if (isValidKey(key, displayinfo_form)) {
-                displayinfo_form[key] = res.data.data[key]
+        if (res.data.code == 6200) {
+            ElMessage.success(res.data.message);
+            for (const key in displayinfo_form) {
+                if (isValidKey(key, displayinfo_form)) {
+                    displayinfo_form[key] = res.data.data[key]
+                }
             }
+        } else {
+            ElMessage.warning(res.data.message);
         }
+
     })
 }
 getimg()

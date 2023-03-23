@@ -98,6 +98,11 @@ const items = [
                 title: '详细资料',
                 permiss: '6',
             },
+            {
+                index: '/matingcondition',
+                title: '择偶条件',
+                permiss: '6',
+            },
             // {
             //     index: '4',
             //     title: '三级菜单',

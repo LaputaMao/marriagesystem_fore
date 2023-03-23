@@ -31,10 +31,25 @@
 					<el-form label-width="auto" :model="baseinfo_form" :rules="select_rules" ref="ruleFormRef" status-icon>
 						<el-form-item label="用户名："> {{ name }} </el-form-item>
 						<el-form-item label="性别：" prop="gender">
-							<el-select v-model="baseinfo_form.gender" clearable :placeholder="baseinfo_request.gender">
+							<el-select v-model="baseinfo_form.gender" clearable placeholder="性别">
 								<el-option v-for="item in options_gender" :key="item.value" :label="item.label"
 									:value="item.value" />
 							</el-select>
+						</el-form-item>
+						<el-form-item label="年龄：" prop="age">
+							<el-input v-model="baseinfo_form.age" :autosize="{ minRows: 1, maxRows: 1 }" placeholder="" />
+							<!-- <el-select v-model="baseinfo_form.age" clearable :placeholder="baseinfo_request.age">
+								<el-option v-for="item in options_gender" :key="item.value" :label="item.label"
+									:value="item.value" />
+							</el-select> -->
+						</el-form-item>
+						<el-form-item label="身高：" prop="height">
+							<el-input v-model="baseinfo_form.height" :autosize="{ minRows: 1, maxRows: 1 }"
+								placeholder="" />
+							<!-- <el-select v-model="baseinfo_form.height" clearable :placeholder="baseinfo_request.height">
+								<el-option v-for="item in options_gender" :key="item.value" :label="item.label"
+									:value="item.value" />
+							</el-select> -->
 						</el-form-item>
 						<el-form-item label="教育背景：" prop="edubackground">
 							<el-select v-model="baseinfo_form.edubackground" clearable
@@ -174,6 +189,8 @@ const props = {
 }
 const baseinfo_form = reactive({
 	gender: '',
+	age: '',
+	height: '',
 	edubackground: '',
 	workprovince: '',
 	nativeprovince: '',
@@ -188,6 +205,8 @@ const baseinfo_form = reactive({
 
 const baseinfo_request = reactive<any>({
 	gender: '',
+	age: '',
+	height: '',
 	edubackground: '',
 	workprovince: '',
 	nativeprovince: '',
@@ -790,6 +809,12 @@ const select_rules = reactive<FormRules>({
 	gender: [
 		{ required: true, message: '不能为空', trigger: 'blur' }
 	],
+	age: [
+		{ required: true, message: '不能为空', trigger: 'blur' }
+	],
+	height: [
+		{ required: true, message: '不能为空', trigger: 'blur' }
+	],
 	edubackground: [
 		{ required: true, message: '不能为空', trigger: 'blur' }
 	],
@@ -926,11 +951,16 @@ function getimg() {
 function getbaseinfo() {
 	GetBaseInfo().then((res) => {
 		// console.log(res);
-		for (const key in baseinfo_form) {
-			// console.log(res.data.data[key])
-			if (isValidKey(key, baseinfo_form)) {
-				baseinfo_form[key] = res.data.data[key]
+		if (res.data.code == 6200) {
+			ElMessage.success(res.data.message);
+			for (const key in baseinfo_form) {
+				// console.log(res.data.data[key])
+				if (isValidKey(key, baseinfo_form)) {
+					baseinfo_form[key] = res.data.data[key]
+				}
 			}
+		} else {
+			ElMessage.warning(res.data.message);
 		}
 		// baseinfo_form.gender = res.data.data.gender
 	})
@@ -943,6 +973,10 @@ getbaseinfo()
 </script>
 
 <style scoped>
+.el-input {
+	width: 220px;
+}
+
 .clearfix {
 	text-align: center;
 	background: #e0eee8;

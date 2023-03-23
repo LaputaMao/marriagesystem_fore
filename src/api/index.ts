@@ -74,6 +74,32 @@ export const UpdateDisplayInfo = (params: any) => {
     });
 };
 
+//个人中心-择偶条件-获取
+export const GetMatingCondition = () => {
+    return request({
+        url: '/api/personal/getmatingcondition',
+        method: 'get',
+        // data: params,
+        headers: {
+            "token": localStorage.getItem("token") as string,
+            // "Content-Type": "multipart/form-data",
+        }
+    });
+};
+
+//个人中心-择偶条件-更新
+export const UpdateMatingCondition = (params: any) => {
+    return request({
+        url: '/api/personal/updatematingcondition',
+        method: 'post',
+        data: params,
+        headers: {
+            "token": localStorage.getItem("token") as string,
+            "Content-Type": "multipart/form-data",
+        }
+    });
+};
+
 
 //上传用户头像
 export const ImgUpload = (params: any) => {

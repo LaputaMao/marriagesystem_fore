@@ -30,6 +30,14 @@ const routes: RouteRecordRaw[] = [
                 component: () => import(/* webpackChunkName: "user" */ '../views/displayinfo.vue'),
             },
             {
+                path: '/matingcondition',
+                name: 'matingcondition',
+                meta: {
+                    title: '择偶条件',
+                },
+                component: () => import(/* webpackChunkName: "user" */ '../views/matingcondition.vue'),
+            },
+            {
                 path: '/recommend',
                 name: 'Recommend',
                 meta: {
