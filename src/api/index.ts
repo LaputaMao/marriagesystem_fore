@@ -100,6 +100,17 @@ export const UpdateMatingCondition = (params: any) => {
     });
 };
 
+//根据择偶条件推荐
+export const RecommendByUserCondition = (params: any) => {
+    return request({
+        url: '/api/recommend/byusercondition',
+        method: 'get',
+        params: params,
+        headers: {
+            "token": localStorage.getItem("token") as string,
+        }
+    })
+}
 
 //上传用户头像
 export const ImgUpload = (params: any) => {

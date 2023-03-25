@@ -1,201 +1,233 @@
 <template>
 	<div>
-		<el-row :gutter="20">
-			<!-- <el-col :span="8">
-				<el-card shadow="hover" class="mgb20" style="height: 252px">
-					<div class="user-info">
-						<el-avatar :size="120" :src="imgurl" />
-						<div class="user-info-cont">
-							<div class="user-info-name">{{ name }}</div>
-							<div>{{ role }}</div>
+		<el-row :gutter="10">
+			<el-col v-for="item in candidate_list.values" :key="item" :span="6" :offset="0">
+				<el-card shadow="hover" class="clearfix_" @click="show_dialog">
+					<div class="info-image">
+						<!-- <el-avatar :size="100" :src="avatarImg" /> -->
+						<el-image :src="item.image" />
+					</div>
+					<div style="padding: 11px">
+						<span>{{ item.username }}</span>
+						<div class="bottom">
+							<time class="time">{{ item.gender }}&nbsp;{{ item.age }}岁<br />身高:{{ item.height }}</time>
+							<!-- <el-button text class="button">Operating</el-button> -->
 						</div>
 					</div>
-					<div class="user-info-list">
-						上次登录时间：
-						<span>2022-10-01</span>
-					</div>
-					<div class="user-info-list">
-						上次登录地点：
-						<span>东莞</span>
-					</div>
-				</el-card>
-				<el-card shadow="hover" style="height: 252px">
-					<template #header>
-						<div class="clearfix">
-							<span>语言详情</span>
-						</div>
-					</template>
-					Vue
-					<el-progress :percentage="79.4" color="#42b983"></el-progress>
-					TypeScript
-					<el-progress :percentage="14" color="#f1e05a"></el-progress>
-					CSS
-					<el-progress :percentage="5.6"></el-progress>
-					HTML
-					<el-progress :percentage="1" color="#f56c6c"></el-progress>
-				</el-card>
-			</el-col> -->
-			<!-- <el-col :span="16">
-				<el-row :gutter="20" class="mgb20">
-					<el-col :span="8">
-						<el-card shadow="hover" :body-style="{ padding: '0px' }">
-							<div class="grid-content grid-con-1">
-								<el-icon class="grid-con-icon"><User /></el-icon>
-								<div class="grid-cont-right">
-									<div class="grid-num">1234</div>
-									<div>用户访问量</div>
-								</div>
-							</div>
-						</el-card>
-					</el-col>
-					<el-col :span="8">
-						<el-card shadow="hover" :body-style="{ padding: '0px' }">
-							<div class="grid-content grid-con-2">
-								<el-icon class="grid-con-icon"><ChatDotRound /></el-icon>
-								<div class="grid-cont-right">
-									<div class="grid-num">321</div>
-									<div>系统消息</div>
-								</div>
-							</div>
-						</el-card>
-					</el-col>
-					<el-col :span="8">
-						<el-card shadow="hover" :body-style="{ padding: '0px' }">
-							<div class="grid-content grid-con-3">
-								<el-icon class="grid-con-icon"><Goods /></el-icon>
-								<div class="grid-cont-right">
-									<div class="grid-num">5000</div>
-									<div>商品数量</div>
-								</div>
-							</div>
-						</el-card>
-					</el-col>
-				</el-row>
-				<el-card shadow="hover" style="height: 403px">
-					<template #header>
-						<div class="clearfix">
-							<span>待办事项</span>
-							<el-button style="float: right; padding: 3px 0" text>添加</el-button>
-						</div>
-					</template>
-
-					<el-table :show-header="false" :data="todoList" style="width: 100%">
-						<el-table-column width="40">
-							<template #default="scope">
-								<el-checkbox v-model="scope.row.status"></el-checkbox>
-							</template>
-						</el-table-column>
-						<el-table-column>
-							<template #default="scope">
-								<div
-									class="todo-item"
-									:class="{
-										'todo-item-del': scope.row.status
-									}"
-								>
-									{{ scope.row.title }}
-								</div>
-							</template>
-						</el-table-column>
-					</el-table>
-				</el-card>
-			</el-col> -->
-		</el-row>
-		<el-row :gutter="20">
-			<!-- <el-col :span="12">
-				<el-card shadow="hover">
-					<schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>
 				</el-card>
 			</el-col>
-			<el-col :span="12">
-				<el-card shadow="hover">
-					<schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
-				</el-card>
-			</el-col> -->
+			<el-col :span="8">
+				<!-- <el-card shadow="hover" class="clearfix_">
+				</el-card> -->
+			</el-col>
 		</el-row>
+		<el-row :gutter="20">
+			<el-col :span="12">
+				<!-- <el-card shadow="hover" class="clearfix_">
+				</el-card> -->
+			</el-col>
+		</el-row>
+		<el-dialog v-model="dialog_visible" title="Tips" width="30%" :before-close="handle_close">
+			<span>This is a message</span>
+			<template #footer>
+				<span class="dialog-footer">
+					<el-button @click="dialog_visible = false">Cancel</el-button>
+					<el-button type="primary" @click="dialog_visible = false">
+						Confirm
+					</el-button>
+				</span>
+			</template>
+		</el-dialog>
 	</div>
 </template>
 
 <script setup lang="ts" name="recommend">
 import Schart from 'vue-schart';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import imgurl from '../assets/img/img.jpg';
+import { ImgGet, RecommendByUserCondition } from '../api/index';
+import { ElMessage } from 'element-plus';
+
 
 const name = localStorage.getItem('username');
-const role: string = name === 'admin' ? '超级管理员' : '普通用户';
+const test = [{
+	name: '111',
+	age: '111'
+}, {
+	name: '2222',
+	age: '22'
+}, {
+	name: '33',
+	age: '33'
+}, {
+	name: '44',
+	age: '44'
+}, {
+	name: '111',
+	age: '111'
+}, {
+	name: '2222',
+	age: '22'
+}, {
+	name: '33',
+	age: '33'
+}, {
+	name: '44',
+	age: '44'
+},]
 
-const options = {
-	type: 'bar',
-	title: {
-		text: '最近一周各品类销售图'
-	},
-	xRorate: 25,
-	labels: ['周一', '周二', '周三', '周四', '周五'],
-	datasets: [
-		{
-			label: '家电',
-			data: [234, 278, 270, 190, 230]
-		},
-		{
-			label: '百货',
-			data: [164, 178, 190, 135, 160]
-		},
-		{
-			label: '食品',
-			data: [144, 198, 150, 235, 120]
+const params_get = {
+	page: '1',
+	per_page: '8',
+}
+const pages = ref('')
+const candidate_list = reactive<any>([])
+const dialog_visible = ref(false)
+
+const show_dialog = () => {
+	dialog_visible.value = true
+}
+const handle_close = () => {
+	// 关闭对话框钩子
+}
+
+function getrecommend() {
+	RecommendByUserCondition(params_get).then((res) => {
+		if (res.data.code == 6200) {
+			// console.log(res)
+			ElMessage.success(res.data.message);
+			pages.value = res.data.pages;
+			candidate_list.values = res.data.data
+			// candidate_list.values接收数据
+			// 该数据为全部数据
+			// console.log(candidate_list.values);
+		} else {
+			ElMessage.warning(res.data.message);
 		}
-	]
-};
-const options2 = {
-	type: 'line',
-	title: {
-		text: '最近几个月各品类销售趋势图'
-	},
-	labels: ['6月', '7月', '8月', '9月', '10月'],
-	datasets: [
-		{
-			label: '家电',
-			data: [234, 278, 270, 190, 230]
-		},
-		{
-			label: '百货',
-			data: [164, 178, 150, 135, 160]
-		},
-		{
-			label: '食品',
-			data: [74, 118, 200, 235, 90]
-		}
-	]
-};
-const todoList = reactive([
-	{
-		title: '今天要修复100个bug',
-		status: false
-	},
-	{
-		title: '今天要修复100个bug',
-		status: false
-	},
-	{
-		title: '今天要写100行代码加几个bug吧',
-		status: false
-	},
-	{
-		title: '今天要修复100个bug',
-		status: false
-	},
-	{
-		title: '今天要修复100个bug',
-		status: true
-	},
-	{
-		title: '今天要写100行代码加几个bug吧',
-		status: true
-	}
-]);
+	})
+}
+getrecommend()
+
+// const options = {
+// 	type: 'bar',
+// 	title: {
+// 		text: '最近一周各品类销售图'
+// 	},
+// 	xRorate: 25,
+// 	labels: ['周一', '周二', '周三', '周四', '周五'],
+// 	datasets: [
+// 		{
+// 			label: '家电',
+// 			data: [234, 278, 270, 190, 230]
+// 		},
+// 		{
+// 			label: '百货',
+// 			data: [164, 178, 190, 135, 160]
+// 		},
+// 		{
+// 			label: '食品',
+// 			data: [144, 198, 150, 235, 120]
+// 		}
+// 	]
+// };
+// const options2 = {
+// 	type: 'line',
+// 	title: {
+// 		text: '最近几个月各品类销售趋势图'
+// 	},
+// 	labels: ['6月', '7月', '8月', '9月', '10月'],
+// 	datasets: [
+// 		{
+// 			label: '家电',
+// 			data: [234, 278, 270, 190, 230]
+// 		},
+// 		{
+// 			label: '百货',
+// 			data: [164, 178, 150, 135, 160]
+// 		},
+// 		{
+// 			label: '食品',
+// 			data: [74, 118, 200, 235, 90]
+// 		}
+// 	]
+// };
+// const todoList = reactive([
+// 	{
+// 		title: '今天要修复100个bug',
+// 		status: false
+// 	},
+// 	{
+// 		title: '今天要修复100个bug',
+// 		status: false
+// 	},
+// 	{
+// 		title: '今天要写100行代码加几个bug吧',
+// 		status: false
+// 	},
+// 	{
+// 		title: '今天要修复100个bug',
+// 		status: false
+// 	},
+// 	{
+// 		title: '今天要修复100个bug',
+// 		status: true
+// 	},
+// 	{
+// 		title: '今天要写100行代码加几个bug吧',
+// 		status: true
+// 	}
+// ]);
 </script>
 
 <style scoped>
+.el-card:hover {
+	box-shadow: 0 10px 50px rgba(255, 142, 170, 0.932);
+	border-color: #ffe9ba;
+	transition: all 0.4s ease;
+}
+
+.clearfix {
+	text-align: center;
+	background: #e0eee8;
+	border: 1px solid #e0eee8;
+	padding: 0px;
+	margin: 0px;
+}
+
+.clearfix_ {
+	padding: 0px;
+	background: #ffe9ec;
+	border: 10px solid #fdeedf;
+}
+
+.time {
+	font-size: 15px;
+	color: #999;
+}
+
+.bottom {
+	margin-top: 13px;
+	line-height: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.info-image {
+	position: relative;
+	margin: auto;
+	width: 200px;
+	height: 200px;
+	background: #ffffff;
+	border: 1px solid #ffffff;
+	border-radius: 50px;
+	overflow: visible;
+}
+
+.info-image:hover .info-edit {
+	opacity: 1;
+}
+
 .el-row {
 	margin-bottom: 20px;
 }
