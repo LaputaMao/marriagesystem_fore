@@ -2,7 +2,8 @@
 	<div>
 		<el-row :gutter="10">
 			<el-col v-for="item in candidate_list.values" :key="item" :span="6" :offset="0">
-				<el-card shadow="hover" class="clearfix_" @click="show_dialog">
+				<!-- 向dialog中传输对应用户数据解决办法：将v-for中的item通过show_dialog()函数传入dialog_data中 -->
+				<el-card shadow="hover" class="clearfix_" @click="show_dialog(item)">
 					<div class="info-image">
 						<!-- <el-avatar :size="100" :src="avatarImg" /> -->
 						<el-image :src="item.image" />
@@ -15,6 +16,19 @@
 						</div>
 					</div>
 				</el-card>
+				<!-- 将el-dialog写到v-for中只会使得dialog赋最后一次的值 -->
+				<!-- <el-dialog v-model="dialog_visible" :title="item.username" width="30%" :before-close="handle_close"
+					destroy-on-close>
+					<span>{{}}</span>
+					<template #footer>
+						<span class="dialog-footer">
+							<el-button @click="dialog_visible = false">Cancel</el-button>
+							<el-button type="primary" @click="dialog_visible = false">
+								Confirm
+							</el-button>
+						</span>
+					</template>
+				</el-dialog> -->
 			</el-col>
 			<el-col :span="8">
 				<!-- <el-card shadow="hover" class="clearfix_">
@@ -27,15 +41,91 @@
 				</el-card> -->
 			</el-col>
 		</el-row>
-		<el-dialog v-model="dialog_visible" title="Tips" width="30%" :before-close="handle_close">
-			<span>This is a message</span>
+		<!--dialog展示候选者其余数据 -->
+		<!-- dialog.username是没有数据的，reactive类型需要用dialog.value.username进行访问 -->
+		<el-dialog v-model="dialog_visible" title="详细信息" width="30%" destroy-on-close :show-close="false" align-center>
+			<template #header>
+				<div class="my-header">
+					<!-- <el-icon class="el-icon--left">
+						<CircleCloseFilled />
+					</el-icon> -->
+					<!-- <h3 class="titleClass">{{ dialog_data.value.username }}</h3> -->
+					<div class="info-image">
+						<el-image :src="dialog_data.value.image" />
+					</div>
+				</div>
+			</template>
+
+			<el-descriptions :column="1" size="large">
+				<el-descriptions-item align="center">
+					{{ dialog_data.value.username }}<br />{{ dialog_data.value.gender }}&nbsp;{{
+						dialog_data.value.age }}岁&nbsp;{{ dialog_data.value.marital }}
+				</el-descriptions-item>
+				<el-descriptions-item label="籍贯">
+					<el-tag size="large" effect="light">{{ dialog_data.value.nativeprovince }}</el-tag>
+				</el-descriptions-item>
+				<el-descriptions-item label="工作地">
+					<el-tag size="large" type="success" effect="light">{{ dialog_data.value.workprovince }}</el-tag>
+				</el-descriptions-item>
+			</el-descriptions>
+			<el-descriptions :column="2" size="large">
+				<el-descriptions-item label="学历">
+					{{ dialog_data.value.edubackground }}
+				</el-descriptions-item>
+				<el-descriptions-item label="身高">
+					{{ dialog_data.value.height }}
+				</el-descriptions-item>
+				<el-descriptions-item label="职业">
+					{{ dialog_data.value.occupation }}
+				</el-descriptions-item>
+				<el-descriptions-item label="月薪">
+					{{ dialog_data.value.salary }}
+				</el-descriptions-item>
+				<el-descriptions-item label="住房">
+					{{ dialog_data.value.houseornot }}
+				</el-descriptions-item>
+				<el-descriptions-item label="购车">
+					{{ dialog_data.value.carornot }}
+				</el-descriptions-item>
+				<el-descriptions-item label="星座">
+					{{ dialog_data.value.constellation }}
+				</el-descriptions-item>
+				<el-descriptions-item label="民族">
+					{{ dialog_data.value.nationality }}
+				</el-descriptions-item>
+				<el-descriptions-item label="特长">
+					{{ dialog_data.value.specialty }}
+				</el-descriptions-item>
+				<el-descriptions-item label="喜欢的书">
+					{{ dialog_data.value.favorbook }}
+				</el-descriptions-item>
+				<el-descriptions-item label="喜欢的歌">
+					{{ dialog_data.value.favorsong }}
+				</el-descriptions-item>
+				<el-descriptions-item label="喜欢的电影">
+					{{ dialog_data.value.favormovie }}
+				</el-descriptions-item>
+			</el-descriptions>
+			<el-descriptions :column="1" size="large" direction="vertical" border>
+				<el-descriptions-item label-class-name="my-label" label="内心独白" label-align="center">
+					{{ dialog_data.value.monologue }}
+				</el-descriptions-item>
+			</el-descriptions>
+			<!-- <span>{{ dialog_data.value.gender }}</span><br />
+			<span>{{ dialog_data.value.age }}</span><br />
+			<span>{{ dialog_data.value.height }}</span><br />
+			<span>{{ dialog_data.value.monologue }}</span><br /> -->
 			<template #footer>
-				<span class="dialog-footer">
-					<el-button @click="dialog_visible = false">Cancel</el-button>
-					<el-button type="primary" @click="dialog_visible = false">
+				<div class="dialog-footer">
+					<!-- <el-button @click="dialog_visible = false">Cancel</el-button> -->
+					<el-button @click="dialog_like" style="display:block;margin:0 auto" size="large" type="danger"
+						:icon="Select" circle /><br />
+					<el-button @click="dialog_dislike" style="display:block;margin:0 auto" size="large" type="info"
+						:icon="CloseBold" circle />
+					<!-- <el-button type="primary" @click="dialog_visible = false">
 						Confirm
-					</el-button>
-				</span>
+					</el-button> -->
+				</div>
 			</template>
 		</el-dialog>
 	</div>
@@ -47,6 +137,10 @@ import { reactive, ref } from 'vue';
 import imgurl from '../assets/img/img.jpg';
 import { ImgGet, RecommendByUserCondition } from '../api/index';
 import { ElMessage } from 'element-plus';
+import {
+	Select,
+	CloseBold,
+} from '@element-plus/icons-vue'
 
 
 const name = localStorage.getItem('username');
@@ -83,12 +177,27 @@ const params_get = {
 const pages = ref('')
 const candidate_list = reactive<any>([])
 const dialog_visible = ref(false)
+const dialog_data = reactive<any>({})
+const dialog_like = () => {
+	dialog_visible.value = false
+	ElMessage.success("like")
+}
+const dialog_dislike = () => {
+	dialog_visible.value = false
+	ElMessage.warning("dislike")
+}
 
-const show_dialog = () => {
+const show_dialog = (_item: any) => {
+	// dialog打印dialog_data的数据，每次点击动态更新
+
+	dialog_data.value = _item
+	// console.log(dialog_data.value)
 	dialog_visible.value = true
+
 }
 const handle_close = () => {
 	// 关闭对话框钩子
+	dialog_visible.value = false
 }
 
 function getrecommend() {
@@ -180,6 +289,23 @@ getrecommend()
 </script>
 
 <style scoped>
+.my-label {
+	background: var(--el-color-success-light-9);
+}
+
+.titleclass {
+	text-align: center;
+	align-items: center;
+}
+
+.my-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	text-align: center;
+	align-items: center;
+}
+
 .el-card:hover {
 	box-shadow: 0 10px 50px rgba(255, 142, 170, 0.932);
 	border-color: #ffe9ba;
