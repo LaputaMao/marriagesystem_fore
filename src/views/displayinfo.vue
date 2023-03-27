@@ -126,7 +126,7 @@ const others_rule = reactive<FormRules>({
 //双表联合验证
 const onSubmit = async (formElO: FormInstance | undefined, formElM: FormInstance | undefined) => {
     if (!formElO || !formElM) {
-        ElMessage.warning("请填写完整信息1")
+        ElMessage.warning("请填写完整信息")
         return
     }
     await formElO.validate((valid, field) => {

@@ -41,9 +41,23 @@
 				</el-card> -->
 			</el-col>
 		</el-row>
+
+		<!-- 翻页 -->
+		<el-row :gutter="10" justify="center">
+			<!-- 上一页 -->
+			<el-button @click="previous_page()" v-if="params_get.page != 1" style="display:block;margin:100 " type="danger"
+				:icon="ArrowLeft" circle />
+			<!-- 页数 -->
+			<el-button style="display:block;margin:100 " type="danger" circle>{{ params_get.page }}/{{ pages
+			}}</el-button>
+			<!-- 下一页 -->
+			<el-button @click="next_page()" v-if="params_get.page != parseInt(pages)" style="display:block;margin:100 "
+				type="danger" :icon="ArrowRight" circle />
+		</el-row>
+
 		<!--dialog展示候选者其余数据 -->
 		<!-- dialog.username是没有数据的，reactive类型需要用dialog.value.username进行访问 -->
-		<el-dialog v-model="dialog_visible" title="详细信息" width="30%" destroy-on-close :show-close="false" >
+		<el-dialog v-model="dialog_visible" title="详细信息" width="30%" destroy-on-close :show-close="false">
 			<template #header>
 				<div class="my-header">
 					<!-- <el-icon class="el-icon--left">
@@ -140,6 +154,8 @@ import { ElMessage } from 'element-plus';
 import {
 	Select,
 	CloseBold,
+	ArrowLeft,
+	ArrowRight,
 } from '@element-plus/icons-vue'
 
 
@@ -170,10 +186,31 @@ const test = [{
 	age: '44'
 },]
 
-const params_get = {
-	page: '1',
-	per_page: '8',
+const params_get = reactive({
+	page: 1,
+	per_page: '4',
+})
+
+const previous_page = () => {
+	if (params_get.page != 1) {
+		params_get.page = params_get.page - 1;
+		ElMessage.success("上一页");
+		getrecommend();
+	} else {
+		ElMessage.warning("已经是第一页了");
+	}
 }
+
+const next_page = () => {
+	if (params_get.page != parseInt(pages.value)) {
+		params_get.page = params_get.page + 1;
+		ElMessage.success("下一页");
+		getrecommend();
+	} else {
+		ElMessage.warning("已经是最后一页了");
+	}
+}
+
 const pages = ref('')
 const candidate_list = reactive<any>([])
 const dialog_visible = ref(false)
@@ -206,7 +243,7 @@ function getrecommend() {
 			// console.log(res)
 			ElMessage.success(res.data.message);
 			pages.value = res.data.pages;
-			candidate_list.values = res.data.data
+			candidate_list.values = res.data.data;
 			// candidate_list.values接收数据
 			// 该数据为全部数据
 			// console.log(candidate_list.values);

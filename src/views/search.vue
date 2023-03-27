@@ -2,15 +2,21 @@
 	<div>
 		<!-- 搜索框 -->
 		<!-- gutter	栅格间隔 -->
+		<!-- <el-form label-width="auto" :model="get_params" :rules="search_rule" ref="ruleFormRef_search"> -->
 		<el-row :gutter="10" justify="center">
 			<el-col :span="12">
+				<!-- <el-form-item prop="search"> -->
 				<el-input v-model="get_params.querystr" placeholder="Please input" clearable>
 					<template #append>
-						<el-button :icon="Search" @click="search_submit" />
+						<el-button :icon="Search" @click="search_submit()" />
 					</template>
 				</el-input>
+				<!-- </el-form-item> -->
+
 			</el-col>
 		</el-row>
+
+
 
 		<!-- 搜索结果展示 -->
 		<el-row :gutter="10">
@@ -32,6 +38,21 @@
 				<!-- 将el-dialog写到v-for中只会使得dialog赋最后一次的值 -->
 			</el-col>
 		</el-row>
+
+		<!-- 翻页 -->
+		<el-row :gutter="10" justify="center">
+			<!-- 上一页 -->
+			<el-button @click="previous_page()" v-if="get_params.page != 1" style="display:block;margin:100 " type="danger"
+				:icon="ArrowLeft" circle />
+			<!-- 页数 -->
+			<el-button style="display:block;margin:100 " type="danger" circle>{{ get_params.page }}/{{ pages
+			}}</el-button>
+			<!-- 下一页 -->
+			<el-button @click="next_page()" v-if="get_params.page != parseInt(pages)" style="display:block;margin:100 "
+				type="danger" :icon="ArrowRight" circle />
+		</el-row>
+
+
 		<el-dialog v-model="dialog_visible" title="详细信息" width="30%" destroy-on-close :show-close="false">
 			<template #header>
 				<div class="my-header">
@@ -117,6 +138,7 @@
 				</div>
 			</template>
 		</el-dialog>
+		<!-- </el-form> -->
 	</div>
 </template>
 
@@ -126,9 +148,11 @@ import {
 	Search,
 	Select,
 	CloseBold,
+	ArrowLeft,
+	ArrowRight,
 } from '@element-plus/icons-vue';
 import { SearchByKeys } from '../api/index';
-import { ElMessage } from 'element-plus';
+import { ElMessage, FormInstance, FormRules } from 'element-plus';
 
 const input = ref('')
 const pages = ref('')
@@ -136,6 +160,14 @@ const candidate_list = reactive<any>([])
 
 const dialog_visible = ref(false)
 const dialog_data = reactive<any>({})
+
+const ruleFormRef_search = ref<FormInstance>()
+const search_rule = reactive<FormRules>({
+	search: [
+		{ required: true, message: '不能为空', trigger: 'blur' }
+	],
+})
+
 const dialog_like = () => {
 	dialog_visible.value = false
 	ElMessage.success("like")
@@ -147,36 +179,54 @@ const dialog_dislike = () => {
 
 const show_dialog = (_item: any) => {
 	// dialog打印dialog_data的数据，每次点击动态更新
-
 	dialog_data.value = _item
 	// console.log(dialog_data.value)
 	dialog_visible.value = true
+}
 
+const previous_page = () => {
+	if (get_params.page != 1) {
+		get_params.page = get_params.page - 1;
+		ElMessage.success("上一页");
+		search_submit();
+	} else {
+		ElMessage.warning("已经是第一页了");
+	}
+}
+
+const next_page = () => {
+	if (get_params.page != parseInt(pages.value)) {
+		get_params.page = get_params.page + 1;
+		ElMessage.success("下一页");
+		search_submit();
+	} else {
+		ElMessage.warning("已经是最后一页了");
+	}
 }
 
 const get_params = reactive({
 	querystr: '',
-	page: '1',
-	per_page: '8',
+	page: 1,
+	per_page: '4',
 })
 const search_submit = () => {
-	// console.log("in")
-	if (get_params.querystr != null) {
-		// get_params.querystr = input.value
-		// console.log(get_params.querystr)
-		SearchByKeys(get_params).then((res) => {
-			if (res.data.code == 6200) {
-				// console.log(res.data)
-				ElMessage.success(res.data.message);
-				pages.value = res.data.pages;
-				candidate_list.values = res.data.data;
-			} else {
-				ElMessage.warning(res.data.message);
-			}
-		})
-	} else {
-		ElMessage.warning("请输入搜索内容")
-	}
+
+	// console.log(get_params.querystr)
+	// await formEl.validate((valid, field) => {
+
+	// get_params.querystr = input.value
+	// console.log(get_params.querystr)
+	SearchByKeys(get_params).then((res) => {
+		if (res.data.code == 6200) {
+			// console.log(res.data)
+			ElMessage.success(res.data.message);
+			pages.value = res.data.pages;
+			candidate_list.values = res.data.data;
+		} else {
+			ElMessage.warning(res.data.message);
+		}
+	})
+	// 
 }
 
 </script>
