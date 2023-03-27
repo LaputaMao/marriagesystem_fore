@@ -112,6 +112,18 @@ export const RecommendByUserCondition = (params: any) => {
     })
 }
 
+//关键字搜索
+export const SearchByKeys = (params: any) => {
+    return request({
+        url: '/api/search',
+        method: 'get',
+        params: params,
+        headers: {
+            "token": localStorage.getItem("token") as string,
+        }
+    })
+}
+
 //上传用户头像
 export const ImgUpload = (params: any) => {
     return request({

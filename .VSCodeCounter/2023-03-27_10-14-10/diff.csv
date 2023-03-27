@@ -1,0 +1,12 @@
+"filename", "language", "JSON with Comments", "TypeScript", "Vue", "comment", "blank", "total"
+"d:\VueProject\vue-manage-system-master\components.d.ts", "TypeScript", 0, 3, 0, 0, 0, 3
+"d:\VueProject\vue-manage-system-master\src\api\index.ts", "TypeScript", 0, 70, 0, 13, 5, 88
+"d:\VueProject\vue-manage-system-master\src\components\sidebar.vue", "Vue", 0, 0, 5, 0, 1, 6
+"d:\VueProject\vue-manage-system-master\src\components\tags.vue", "Vue", 0, 0, -2, 0, 0, -2
+"d:\VueProject\vue-manage-system-master\src\router\index.ts", "TypeScript", 0, 16, 0, 1, 0, 17
+"d:\VueProject\vue-manage-system-master\src\views\displayinfo.vue", "Vue", 0, 0, 250, 4, 24, 278
+"d:\VueProject\vue-manage-system-master\src\views\matingcondition.vue", "Vue", 0, 0, 884, 33, 34, 951
+"d:\VueProject\vue-manage-system-master\src\views\recommend.vue", "Vue", 0, 0, 131, 11, 16, 158
+"d:\VueProject\vue-manage-system-master\src\views\user.vue", "Vue", 0, 0, 744, 41, 10, 795
+"d:\VueProject\vue-manage-system-master\tsconfig.json", "JSON with Comments", 12, 0, 0, 0, -1, 11
+"Total", "-", 12, 89, 2012, 103, 89, 2305

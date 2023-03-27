@@ -1,0 +1,42 @@
+Date : 2023-03-27 10:14:10
+Directory : d:\VueProject\vue-manage-system-master
+Total : 10 files,  2113 codes, 103 comments, 89 blanks, all 2305 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| Vue                |          6 |      2,012 |         89 |         85 |      2,186 |
+| TypeScript         |          3 |         89 |         14 |          5 |        108 |
+| JSON with Comments |          1 |         12 |          0 |         -1 |         11 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                 | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                    |         10 |      2,113 |        103 |         89 |      2,305 |
+| . (Files)                                                            |          2 |         15 |          0 |         -1 |         14 |
+| src                                                                  |          8 |      2,098 |        103 |         90 |      2,291 |
+| src\api                                                              |          1 |         70 |         13 |          5 |         88 |
+| src\components                                                       |          2 |          3 |          0 |          1 |          4 |
+| src\router                                                           |          1 |         16 |          1 |          0 |         17 |
+| src\views                                                            |          4 |      2,009 |         89 |         84 |      2,182 |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                             | language           | code       | comment    | blank      | total      |
++----------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| d:\VueProject\vue-manage-system-master\components.d.ts               | TypeScript         |          3 |          0 |          0 |          3 |
+| d:\VueProject\vue-manage-system-master\src\api\index.ts              | TypeScript         |         70 |         13 |          5 |         88 |
+| d:\VueProject\vue-manage-system-master\src\components\sidebar.vue    | Vue                |          5 |          0 |          1 |          6 |
+| d:\VueProject\vue-manage-system-master\src\components\tags.vue       | Vue                |         -2 |          0 |          0 |         -2 |
+| d:\VueProject\vue-manage-system-master\src\router\index.ts           | TypeScript         |         16 |          1 |          0 |         17 |
+| d:\VueProject\vue-manage-system-master\src\views\displayinfo.vue     | Vue                |        250 |          4 |         24 |        278 |
+| d:\VueProject\vue-manage-system-master\src\views\matingcondition.vue | Vue                |        884 |         33 |         34 |        951 |
+| d:\VueProject\vue-manage-system-master\src\views\recommend.vue       | Vue                |        131 |         11 |         16 |        158 |
+| d:\VueProject\vue-manage-system-master\src\views\user.vue            | Vue                |        744 |         41 |         10 |        795 |
+| d:\VueProject\vue-manage-system-master\tsconfig.json                 | JSON with Comments |         12 |          0 |         -1 |         11 |
+| Total                                                                |                    |      2,113 |        103 |         89 |      2,305 |
++----------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

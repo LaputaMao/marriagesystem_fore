@@ -43,7 +43,7 @@
 		</el-row>
 		<!--dialog展示候选者其余数据 -->
 		<!-- dialog.username是没有数据的，reactive类型需要用dialog.value.username进行访问 -->
-		<el-dialog v-model="dialog_visible" title="详细信息" width="30%" destroy-on-close :show-close="false" align-center>
+		<el-dialog v-model="dialog_visible" title="详细信息" width="30%" destroy-on-close :show-close="false" >
 			<template #header>
 				<div class="my-header">
 					<!-- <el-icon class="el-icon--left">
@@ -302,8 +302,8 @@ getrecommend()
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	text-align: center;
-	align-items: center;
+	/* text-align: center;
+	align-items: center; */
 }
 
 .el-card:hover {

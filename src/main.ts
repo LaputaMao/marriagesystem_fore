@@ -20,7 +20,7 @@ const permiss = usePermissStore();
 app.directive('permiss', {
     mounted(el, binding) {
         if (!permiss.key.includes(String(binding.value))) {
-            el['hidden'] = true;
+            el['hidden'] = false;
         }
     },
 });
